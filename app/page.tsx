@@ -1,319 +1,307 @@
 "use client";
+import React from "react";
 
-// pages/index.tsx
-import Head from "next/head";
-import { useState } from "react";
+// --- Inline brand palette ---
+const BRAND = {
+  navy: "#1F3A5F",
+  emerald: "#2D6A4F",
+  sage: "#B7E4C7",
+  gray: "#F2F2F2",
+  ink: "#0E1726",
+};
 
-export default function Home() {
-  const [email, setEmail] = useState("");
-  const [name, setName] = useState("");
-  const [message, setMessage] = useState("");
+// --- Simple inline SVG mascot (caterpillar + ledger book) ---
+const Logo = ({ size = 72 }) => (
+  <svg width={size} height={size} viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Bookkeeping is Essential logo">
+    <path d="M12 84c0-6 6-10 12-10h56c8 0 12 4 12 10v14H24c-8 0-12-4-12-10V84z" fill={BRAND.navy} />
+    <path d="M24 76h68v21H24c-6 0-10-3-10-7.5S18 76 24 76z" fill={BRAND.gray} />
+    <g stroke={BRAND.navy} strokeWidth="2" opacity=".7">
+      <line x1="28" y1="90" x2="86" y2="90" />
+      <line x1="28" y1="98" x2="86" y2="98" />
+      <line x1="28" y1="106" x2="86" y2="106" />
+    </g>
+    <g>
+      <circle cx="54" cy="52" r="12" fill="#7ED957" stroke={BRAND.navy} strokeWidth="3" />
+      <circle cx="70" cy="60" r="12" fill="#77CF57" stroke={BRAND.navy} strokeWidth="3" />
+      <circle cx="86" cy="66" r="11" fill="#6BC951" stroke={BRAND.navy} strokeWidth="3" />
+      <circle cx="102" cy="70" r="9" fill="#63C24C" stroke={BRAND.navy} strokeWidth="3" />
+    </g>
+    <circle cx="39" cy="44" r="14" fill="#8BE06A" stroke={BRAND.navy} strokeWidth="3" />
+    <path d="M31 30c-3-6-9-6-11-3" stroke={BRAND.navy} strokeWidth="3" strokeLinecap="round"/>
+    <path d="M47 30c3-6 9-6 11-3" stroke={BRAND.navy} strokeWidth="3" strokeLinecap="round"/>
+    <circle cx="34" cy="44" r="7" stroke={BRAND.navy} strokeWidth="3" fill="white" />
+    <circle cx="46" cy="44" r="7" stroke={BRAND.navy} strokeWidth="3" fill="white" />
+    <line x1="41" y1="44" x2="39" y2="44" stroke={BRAND.navy} strokeWidth="3" />
+    <path d="M36 50c3 2 5 2 8 0" stroke={BRAND.navy} strokeWidth="2" strokeLinecap="round" />
+    <rect x="78" y="36" width="22" height="28" rx="3" fill={BRAND.gray} stroke={BRAND.navy} strokeWidth="3" />
+    <rect x="82" y="40" width="14" height="6" rx="1" fill={BRAND.navy} />
+    <g fill={BRAND.navy}>
+      {[...Array(6)].map((_, i) => (
+        <rect key={i} x={82 + (i % 3) * 5} y={50 + Math.floor(i / 3) * 6} width="4" height="4" rx="1" />
+      ))}
+    </g>
+  </svg>
+);
 
-  const mailto = `mailto:hello@bookkeepingisessential.com?subject=Inquiry from ${encodeURIComponent(
-    name || "Website Visitor"
-  )}&body=${encodeURIComponent(message + (email ? `\n\nReply to: ${email}` : ""))}`;
+const Section = ({ children, id, style = {} }: {children: React.ReactNode, id?: string, style?: React.CSSProperties}) => (
+  <section id={id} className="w-full py-20" style={style}>
+    <div className="max-w-6xl mx-auto px-6">{children}</div>
+  </section>
+);
 
+const Pill = ({ children }: {children: React.ReactNode}) => (
+  <span className="inline-flex items-center gap-2 rounded-full px-3 py-1 text-sm"
+        style={{ backgroundColor: BRAND.sage, color: BRAND.ink }}>
+    {children}
+  </span>
+);
+
+export default function BookkeepingIsEssentialSite() {
   return (
-    <main className="min-h-screen bg-gradient-to-b from-white to-slate-50 text-slate-900">
-      <Head>
-        <title>Bookkeeping Is Essential — Friendly, Accurate, On‑Time</title>
-        <meta
-          name="description"
-          content="Bookkeeping Is Essential helps small businesses breathe easy: clean books, clear reports, and kind guidance."
-        />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-      </Head>
-
-      {/* Top Bar */}
-      <div className="w-full bg-slate-900 text-white text-sm py-2">
-        <div className="mx-auto max-w-7xl px-4 flex items-center justify-between">
-          <p className="opacity-90">Serving CA‑based small businesses • Remote‑friendly</p>
-          <a href="tel:+12095551234" className="underline underline-offset-4">(209) 555‑1234</a>
-        </div>
-      </div>
-
+    <div className="min-h-screen" style={{ background: "white", color: BRAND.ink }}>
       {/* Header */}
-      <header className="sticky top-0 z-30 backdrop-blur bg-white/70 border-b border-slate-200">
-        <div className="mx-auto max-w-7xl px-4 py-3 flex items-center justify-between">
+      <header className="sticky top-0 z-40 backdrop-blur supports-[backdrop-filter]:bg-white/70 border-b" style={{ borderColor: "#eee" }}>
+        <div className="max-w-6xl mx-auto px-6 py-3 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <Logo className="h-9 w-9" />
-            <div className="leading-tight">
-              <div className="font-semibold text-lg">Bookkeeping Is Essential</div>
-              <div className="text-xs text-slate-500">Friendly • Precise • On‑Time</div>
-            </div>
+            <Logo size={40} />
+            <span className="font-semibold text-lg" style={{ color: BRAND.navy }}>Bookkeeping is Essential</span>
           </div>
           <nav className="hidden md:flex items-center gap-6 text-sm">
-            <a href="#services" className="hover:text-emerald-600">Services</a>
-            <a href="#process" className="hover:text-emerald-600">Process</a>
-            <a href="#about" className="hover:text-emerald-600">About</a>
-            <a href="#pricing" className="hover:text-emerald-600">Pricing</a>
-            <a href="#contact" className="px-4 py-2 rounded-xl bg-emerald-600 text-white shadow hover:bg-emerald-700">Let’s Talk</a>
+            <a href="#services" className="hover:underline">Services</a>
+            <a href="#process" className="hover:underline">Process</a>
+            <a href="#about" className="hover:underline">About</a>
+            <a href="#contact" className="hover:underline">Contact</a>
           </nav>
+          <a href="#contact" className="ml-4 rounded-lg px-4 py-2 text-white" style={{ backgroundColor: BRAND.emerald }}>
+            Free Consult
+          </a>
         </div>
       </header>
 
       {/* Hero */}
-      <section className="relative overflow-hidden">
-        <div className="mx-auto max-w-7xl px-4 py-16 md:py-24 grid md:grid-cols-2 gap-10 items-center">
-          <div>
-            <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight">
-              Bookkeeping that feels <span className="text-emerald-600">human</span>
-            </h1>
-            <p className="mt-4 text-lg text-slate-600">
-              You bring the hustle. I’ll bring clean books, clear reports, and calm systems—so you can lead your business and your family with confidence.
-            </p>
-            <div className="mt-6 flex flex-wrap gap-3">
-              <a href="#contact" className="px-5 py-3 rounded-xl bg-emerald-600 text-white font-medium shadow hover:bg-emerald-700">Free consult</a>
-              <a href="#services" className="px-5 py-3 rounded-xl border border-slate-300 font-medium hover:border-slate-400">See services</a>
-            </div>
-            <ul className="mt-6 text-sm text-slate-500 grid grid-cols-1 sm:grid-cols-3 gap-2">
-              <li className="flex items-center gap-2"><Check /> QuickBooks cleanup</li>
-              <li className="flex items-center gap-2"><Check /> Monthly closes</li>
-              <li className="flex items-center gap-2"><Check /> Receipt wrangling</li>
-              <li className="flex items-center gap-2"><Check /> Budget dashboards</li>
-              <li className="flex items-center gap-2"><Check /> Audit‑friendly docs</li>
-              <li className="flex items-center gap-2"><Check /> Kind reminders</li>
-            </ul>
-          </div>
-          <div className="relative">
-            <div className="absolute -inset-6 rounded-3xl bg-emerald-100/60 blur-2xl" />
-            <div className="relative rounded-3xl border border-slate-200 bg-white p-6 shadow-xl">
-              <HeroCard />
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Logos / social proof */}
-      <section className="mx-auto max-w-7xl px-4 pb-6">
-        <div className="text-xs uppercase tracking-wider text-slate-500">Tools I work with</div>
-        <div className="mt-3 flex flex-wrap items-center gap-x-8 gap-y-2 opacity-80">
-          <Badge>QuickBooks Online</Badge>
-          <Badge>Bill.com</Badge>
-          <Badge>Expensify</Badge>
-          <Badge>Gusto</Badge>
-          <Badge>Stripe</Badge>
-          <Badge>Square</Badge>
-        </div>
-      </section>
-
-      {/* Services */}
-      <section id="services" className="mx-auto max-w-7xl px-4 py-16">
-        <h2 className="text-3xl font-bold">Services built for small businesses</h2>
-        <p className="mt-2 text-slate-600 max-w-2xl">Transparent, practical, and tailored to how you actually work. No jargon. No judgment.</p>
-        <div className="mt-8 grid md:grid-cols-3 gap-6">
-          <ServiceCard title="Monthly Bookkeeping" bullets={["Bank/CC reconciliations","Categorization & class tracking","Monthly close + KPI snapshot"]} />
-          <ServiceCard title="Cleanup & Catch‑up" bullets={["Fix uncategorized/duplicates","Receipt & W‑9 chase‑down","Audit‑ready folder structure"]} />
-          <ServiceCard title="Systems & Setup" bullets={["QBO chart of accounts","Bill.com & Expensify flows","Simple, visual SOPs"]} />
-        </div>
-      </section>
-
-      {/* Process */}
-      <section id="process" className="mx-auto max-w-7xl px-4 py-16">
-        <h2 className="text-3xl font-bold">A calm, clear process</h2>
-        <div className="mt-8 grid md:grid-cols-4 gap-6">
-          {[
-            { n: "1", t: "Listen", d: "We map your goals, tools, and pain points." },
-            { n: "2", t: "Clean up", d: "Tidy chart of accounts, receipts, and workflows." },
-            { n: "3", t: "Close", d: "On‑time monthly closes with tea‑spoon clear summaries." },
-            { n: "4", t: "Grow", d: "Dashboards + simple habits that scale with you." },
-          ].map((s) => (
-            <div key={s.n} className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-              <div className="h-9 w-9 rounded-xl bg-emerald-600 text-white grid place-content-center font-bold">{s.n}</div>
-              <div className="mt-4 font-semibold">{s.t}</div>
-              <p className="text-slate-600 text-sm mt-1">{s.d}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* About */}
-      <section id="about" className="mx-auto max-w-7xl px-4 py-16">
+      <Section id="hero" style={{ background: `linear-gradient(180deg, ${BRAND.gray}, #fff)` }}>
         <div className="grid md:grid-cols-2 gap-10 items-center">
           <div>
-            <h2 className="text-3xl font-bold">Hi, I’m Liz — your friendly numbers partner</h2>
-            <p className="mt-3 text-slate-600">I help small business owners feel organized and in control. I’m a mom, a systems‑builder, and a calm voice who loves turning chaos into checkmarks. You’ll get clear communication, gentle accountability, and spotless books.</p>
-            <ul className="mt-4 text-sm text-slate-600 list-disc list-inside space-y-1">
-              <li>Experienced with non‑profits & service businesses</li>
-              <li>QuickBooks, Bill.com, and Expensify specialist</li>
-              <li>Audit‑friendly habits without the stress</li>
-            </ul>
+            <h1 className="text-4xl md:text-5xl font-extrabold leading-tight" style={{ color: BRAND.navy }}>
+              Friendly, precise bookkeeping for growing small businesses
+            </h1>
+            <p className="mt-4 text-lg leading-relaxed text-gray-700">
+              I make numbers clear and systems simple—so you can focus on serving your customers and scaling your impact.
+            </p>
+            <div className="mt-6 flex flex-wrap gap-3">
+              <a href="#contact" className="rounded-lg px-5 py-3 text-white" style={{ backgroundColor: BRAND.emerald }}>
+                Get a Free Consult →
+              </a>
+              <a href="#services" className="rounded-lg px-5 py-3 border"
+                 style={{ borderColor: BRAND.navy, color: BRAND.navy }}>
+                View Service Menu
+              </a>
+            </div>
+            <div className="mt-6 flex flex-wrap items-center gap-3 text-sm text-gray-700">
+              <Pill>✔︎ Timely, audit-ready reports</Pill>
+              <Pill>✔︎ Clear communication & kindness</Pill>
+              <Pill>✔︎ Month-end checklists that prevent surprises</Pill>
+            </div>
           </div>
-          <div className="relative">
-            <div className="absolute -inset-6 rounded-3xl bg-emerald-200/40 blur-2xl" />
-            <div className="relative rounded-3xl border border-slate-200 bg-white p-6 shadow-xl grid place-content-center">
-              <Logo className="h-28 w-28 mx-auto" />
-              <p className="mt-4 text-center text-slate-500">The <span className="font-semibold">Caterpillar with Glasses</span> — approachable, precise, and just a little nerdy.</p>
+          <div className="flex justify-center md:justify-end">
+            <div className="p-6 rounded-3xl shadow-lg" style={{ backgroundColor: "white", border: `2px solid ${BRAND.sage}` }}>
+              <Logo size={180} />
             </div>
           </div>
         </div>
-      </section>
+      </Section>
 
-      {/* Pricing */}
-      <section id="pricing" className="mx-auto max-w-7xl px-4 py-16">
-        <h2 className="text-3xl font-bold">Simple, transparent pricing</h2>
-        <p className="mt-2 text-slate-600 max-w-2xl">Every plan includes monthly closes, receipt follow‑ups, and quarterly check‑ins. Custom proposals for complex setups.</p>
-        <div className="mt-8 grid md:grid-cols-3 gap-6">
-          <PriceCard name="Starter" price="$399/mo" features={["Up to 2 accounts","Monthly close","Email support"]} />
-          <PriceCard name="Standard" price="$699/mo" featured features={["Up to 5 accounts","Close + KPI snapshot","Email + text support"]} />
-          <PriceCard name="Premium" price="$1,099/mo" features={["Up to 8 accounts","Close + KPI + budget","Priority support"]} />
+      {/* Services */}
+      <Section id="services">
+        <div className="text-center mb-10">
+          <h2 className="text-3xl md:text-4xl font-bold" style={{ color: BRAND.navy }}>Service Tiers</h2>
+          <p className="mt-2 text-gray-600">Pick the support that fits your stage. Upgrade any time.</p>
         </div>
-      </section>
-
-      {/* Contact */}
-      <section id="contact" className="mx-auto max-w-7xl px-4 py-16">
-        <div className="rounded-3xl border border-slate-200 bg-white p-8 shadow-sm">
-          <h2 className="text-3xl font-bold">Let’s make your books a breeze</h2>
-          <p className="mt-2 text-slate-600">Tell me a little about your business, and I’ll reply within one business day.</p>
-          <form className="mt-6 grid md:grid-cols-3 gap-4" onSubmit={(e)=>{e.preventDefault(); window.location.href = mailto;}}>
-            <input required placeholder="Your name" className="md:col-span-1 px-4 py-3 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-emerald-500" value={name} onChange={(e)=>setName(e.target.value)} />
-            <input type="email" placeholder="Email (optional)" className="md:col-span-1 px-4 py-3 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-emerald-500" value={email} onChange={(e)=>setEmail(e.target.value)} />
-            <button className="md:col-span-1 px-4 py-3 rounded-xl bg-emerald-600 text-white font-medium shadow hover:bg-emerald-700" type="submit">Send</button>
-            <textarea required placeholder="What do you need help with?" className="md:col-span-3 px-4 py-3 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-emerald-500 min-h-[120px]" value={message} onChange={(e)=>setMessage(e.target.value)} />
-          </form>
-        </div>
-      </section>
-
-      {/* Footer */}
-      <footer className="mt-20 border-t border-slate-200 bg-white">
-        <div className="mx-auto max-w-7xl px-4 py-10 grid md:grid-cols-3 gap-6 text-sm">
-          <div>
-            <div className="flex items-center gap-2">
-              <Logo className="h-6 w-6" />
-              <span className="font-semibold">Bookkeeping Is Essential</span>
-            </div>
-            <p className="mt-2 text-slate-500 max-w-sm">Friendly and precise bookkeeping for small businesses across California. Remote‑friendly.</p>
-          </div>
-          <div>
-            <div className="font-semibold">Quick links</div>
-            <ul className="mt-2 space-y-1 text-slate-600">
-              <li><a href="#services" className="hover:text-emerald-600">Services</a></li>
-              <li><a href="#process" className="hover:text-emerald-600">Process</a></li>
-              <li><a href="#pricing" className="hover:text-emerald-600">Pricing</a></li>
-              <li><a href="#contact" className="hover:text-emerald-600">Contact</a></li>
-            </ul>
-          </div>
-          <div>
-            <div className="font-semibold">Get in touch</div>
-            <ul className="mt-2 space-y-1 text-slate-600">
-              <li><a className="underline underline-offset-4" href="mailto:hello@bookkeepingisessential.com">hello@bookkeepingisessential.com</a></li>
-              <li><a className="underline underline-offset-4" href="tel:+12095551234">(209) 555‑1234</a></li>
-              <li>Tracy, CA</li>
-            </ul>
-          </div>
-        </div>
-        <div className="text-center text-xs text-slate-500 pb-8">© {new Date().getFullYear()} Bookkeeping Is Essential. All rights reserved.</div>
-      </footer>
-    </main>
-  );
-}
-
-function Badge({ children }: { children: React.ReactNode }) {
-  return (
-    <span className="px-3 py-1 rounded-full bg-slate-100 border border-slate-200 text-slate-700 text-xs">{children}</span>
-  );
-}
-
-function Check() {
-  return (
-    <svg viewBox="0 0 20 20" fill="currentColor" className="text-emerald-600 h-4 w-4">
-      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-7.25 7.25a1 1 0 01-1.414 0l-3-3a1 1 0 111.414-1.414l2.293 2.293 6.543-6.543a1 1 0 011.414 0z" clipRule="evenodd" />
-    </svg>
-  );
-}
-
-function ServiceCard({ title, bullets }: { title: string; bullets: string[] }) {
-  return (
-    <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-      <div className="font-semibold text-lg">{title}</div>
-      <ul className="mt-3 space-y-2 text-slate-600 text-sm">
-        {bullets.map((b) => (
-          <li key={b} className="flex gap-2 items-start"><Check /><span>{b}</span></li>
-        ))}
-      </ul>
-    </div>
-  );
-}
-
-function PriceCard({ name, price, features, featured }: { name: string; price: string; features: string[]; featured?: boolean }) {
-  return (
-    <div className={"rounded-2xl border p-6 shadow-sm bg-white " + (featured ? "border-emerald-300 shadow-lg" : "border-slate-200") }>
-      <div className="flex items-baseline justify-between">
-        <div className="font-semibold text-lg">{name}</div>
-        <div className="text-2xl font-extrabold text-emerald-700">{price}</div>
-      </div>
-      <ul className="mt-4 space-y-2 text-slate-600 text-sm">
-        {features.map((f) => (
-          <li key={f} className="flex gap-2 items-start"><Check /><span>{f}</span></li>
-        ))}
-      </ul>
-      <a href="#contact" className="mt-5 inline-block w-full text-center px-4 py-3 rounded-xl bg-emerald-600 text-white font-medium hover:bg-emerald-700">Get started</a>
-    </div>
-  );
-}
-
-function HeroCard() {
-  return (
-    <div className="grid gap-4">
-      <div className="flex items-center gap-3">
-        <Logo className="h-10 w-10" />
-        <div>
-          <div className="font-semibold">“Books, but make it kind.”</div>
-          <div className="text-xs text-slate-500">Liz • Owner</div>
-        </div>
-      </div>
-      <div className="rounded-xl border border-slate-200 p-4">
-        <div className="text-sm text-slate-600">Last month snapshot</div>
-        <div className="mt-3 grid grid-cols-3 gap-3 text-center">
-          {[{k:"Reconciled",v:"12 accts"},{k:"Receipts",v:"100%"},{k:"Close",v:"On‑time"}].map((m)=>(
-            <div key={m.k} className="rounded-xl bg-slate-50 p-3 border border-slate-200">
-              <div className="text-xs text-slate-500">{m.k}</div>
-              <div className="font-semibold">{m.v}</div>
+        <div className="grid md:grid-cols-3 gap-6">
+          {[
+            {
+              title: "Starter",
+              price: "from $399/mo",
+              bullets: [
+                "Monthly categorization & reconciliation",
+                "P&L + Balance Sheet",
+                "Email support within 2 biz days",
+              ],
+            },
+            {
+              title: "Growth",
+              price: "from $699/mo",
+              bullets: [
+                "Weekly transaction review",
+                "Budget vs. Actuals dashboard",
+                "Quarterly calls & tax-time prep",
+              ],
+            },
+            {
+              title: "Essential Plus",
+              price: "custom",
+              bullets: [
+                "AR/AP workflows & vendor mgmt",
+                "Receipt systems (Expensify/Dext)",
+                "Audit-ready close checklist",
+              ],
+            },
+          ].map((p, i) => (
+            <div key={i} className="rounded-2xl shadow-md border p-6 flex flex-col"
+                 style={{ borderColor: BRAND.gray }}>
+              <div className="flex items-baseline justify-between">
+                <div className="text-lg font-semibold" style={{ color: BRAND.emerald }}>{p.title}</div>
+                <div className="text-sm text-gray-500">{p.price}</div>
+              </div>
+              <ul className="mt-4 space-y-2 text-gray-700">
+                {p.bullets.map((b, j) => (
+                  <li key={j}>✔︎ {b}</li>
+                ))}
+              </ul>
+              <a href="#contact" className="mt-4 w-full text-center rounded-lg px-4 py-2 text-white"
+                 style={{ backgroundColor: BRAND.navy }}>
+                Choose {p.title}
+              </a>
             </div>
           ))}
         </div>
-      </div>
-      <div className="rounded-xl bg-emerald-50 border border-emerald-200 p-4 text-sm text-emerald-900">
-        <div className="font-semibold">What clients say</div>
-        <p className="mt-1">“Liz keeps us organized and explains everything in plain English. My stress went way down.”</p>
-      </div>
-    </div>
-  );
-}
+      </Section>
 
-function Logo({ className = "h-8 w-8" }: { className?: string }) {
-  // Caterpillar with glasses holding a calculator — simple, friendly SVG
-  return (
-    <svg viewBox="0 0 120 120" className={className} xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Bookkeeping Is Essential logo">
-      <defs>
-        <linearGradient id="g" x1="0" x2="1">
-          <stop offset="0%" stopColor="#10b981"/>
-          <stop offset="100%" stopColor="#065f46"/>
-        </linearGradient>
-      </defs>
-      {/* Body segments */}
-      <circle cx="32" cy="75" r="12" fill="url(#g)"/>
-      <circle cx="52" cy="70" r="14" fill="url(#g)"/>
-      <circle cx="74" cy="66" r="16" fill="url(#g)"/>
-      {/* Head */}
-      <circle cx="92" cy="55" r="18" fill="url(#g)"/>
-      {/* Glasses */}
-      <circle cx="84" cy="52" r="6" fill="white" stroke="#0f172a" strokeWidth="2"/>
-      <circle cx="98" cy="50" r="6" fill="white" stroke="#0f172a" strokeWidth="2"/>
-      <rect x="89" y="49" width="4" height="2" fill="#0f172a"/>
-      {/* Smile */}
-      <path d="M86 60 q6 6 12 0" stroke="#0f172a" strokeWidth="2" fill="none" strokeLinecap="round"/>
-      {/* Calculator */}
-      <rect x="42" y="40" width="18" height="24" rx="2" fill="#0f172a"/>
-      <rect x="45" y="44" width="12" height="6" rx="1" fill="white"/>
-      {[...Array(6)].map((_,i)=>{
-        const x = 45 + (i%3)*4;
-        const y = 52 + Math.floor(i/3)*4;
-        return <rect key={i} x={x} y={y} width={3} height={3} rx="0.5" fill="#a7f3d0"/>;
-      })}
-      {/* Antennae */}
-      <path d="M100 33 q4 -8 10 -10" stroke="#065f46" strokeWidth="2" fill="none"/>
-      <path d="M86 34 q-4 -8 -10 -10" stroke="#065f46" strokeWidth="2" fill="none"/>
-    </svg>
+      {/* Niches */}
+      <Section id="niches" style={{ backgroundColor: BRAND.gray }}>
+        <div className="text-center mb-8">
+          <h2 className="text-3xl font-bold" style={{ color: BRAND.navy }}>Who I Serve</h2>
+          <p className="text-gray-700">Approachable support for mission-driven owners.</p>
+        </div>
+        <div className="grid md:grid-cols-3 gap-6">
+          {[
+            { title: "Childcare & Youth Programs", desc: "P&L by site/class, grant coding, clean receipts." },
+            { title: "Local Service Businesses", desc: "Real-time categorization and monthly close you can trust." },
+            { title: "Nonprofits & Faith-based", desc: "Stewardship-minded reporting with clarity & care." },
+          ].map((n, i) => (
+            <div key={i} className="rounded-2xl border p-6 bg-white" style={{ borderColor: BRAND.gray }}>
+              <div className="font-semibold mb-1" style={{ color: BRAND.emerald }}>{n.title}</div>
+              <div className="text-gray-700">{n.desc}</div>
+            </div>
+          ))}
+        </div>
+      </Section>
+
+      {/* Process */}
+      <Section id="process">
+        <div className="text-center mb-8">
+          <h2 className="text-3xl font-bold" style={{ color: BRAND.navy }}>A Simple, Calm Process</h2>
+          <p className="text-gray-600">Clarity in every transaction.</p>
+        </div>
+        <div className="grid md:grid-cols-4 gap-6">
+          {[
+            { step: "1", title: "Discovery", desc: "Quick call to learn your needs and systems." },
+            { step: "2", title: "Set-Up", desc: "Chart of accounts, classes, and receipt flow." },
+            { step: "3", title: "Monthly Close", desc: "Reconcile, review, and deliver clean reports." },
+            { step: "4", title: "Growth", desc: "Budgets, insights, and stress-free audits." },
+          ].map((s, i) => (
+            <div key={i} className="rounded-2xl border p-6" style={{ borderColor: BRAND.gray }}>
+              <div className="text-sm text-gray-500">Step {s.step}</div>
+              <div className="font-semibold">{s.title}</div>
+              <div className="text-gray-700 mt-2">{s.desc}</div>
+            </div>
+          ))}
+        </div>
+      </Section>
+
+      {/* Testimonials */}
+      <Section id="testimonials" style={{ backgroundColor: BRAND.gray }}>
+        <div className="text-center mb-8">
+          <h2 className="text-3xl font-bold" style={{ color: BRAND.navy }}>Kind Words</h2>
+          <p className="text-gray-700">Clients appreciate clarity, care, and on-time books.</p>
+        </div>
+        <div className="grid md:grid-cols-3 gap-6">
+          {[
+            "Elizabeth made our P&L by site make sense—finally.",
+            "Super responsive and so patient explaining the why behind the numbers.",
+            "Month-end used to be chaos. Now it’s a checklist.",
+          ].map((q, i) => (
+            <div key={i} className="rounded-2xl border p-6 bg-white" style={{ borderColor: BRAND.gray }}>
+              <div className="mb-2">★★★★★</div>
+              <p className="text-gray-800">“{q}”</p>
+            </div>
+          ))}
+        </div>
+      </Section>
+
+      {/* About */}
+      <Section id="about">
+        <div className="grid md:grid-cols-2 gap-10 items-start">
+          <div>
+            <h2 className="text-3xl font-bold" style={{ color: BRAND.navy }}>
+              Hi, I’m Elizabeth — your calm, systems-minded bookkeeper.
+            </h2>
+            <p className="mt-4 text-gray-700">
+              I blend warmth and professionalism with a builder’s mindset. I love turning messy, overwhelming books into clear, reliable reports
+              that help you lead with confidence. You’ll always get transparency, kindness, and audit-ready accuracy.
+            </p>
+            <ul className="mt-4 space-y-2 text-gray-700">
+              <li>✔︎ Experienced with QuickBooks, Expensify/Bill.com, multi-site class tracking</li>
+              <li>✔︎ Clear monthly closes & on-time P&Ls</li>
+              <li>✔︎ Gentle accountability and proactive communication</li>
+            </ul>
+          </div>
+          <div className="rounded-3xl shadow-md border p-6 bg-white" style={{ borderColor: BRAND.gray }}>
+            <div className="font-semibold mb-4">Mini Brand Kit</div>
+            <div className="flex items-center gap-4">
+              <Logo size={56} />
+              <div>
+                <div className="font-semibold" style={{ color: BRAND.navy }}>Bookkeeping is Essential</div>
+                <div className="text-sm text-gray-600">Navy {BRAND.navy} · Emerald {BRAND.emerald} · Sage {BRAND.sage}</div>
+              </div>
+            </div>
+            <div className="mt-4 grid grid-cols-3 gap-3">
+              {[BRAND.navy, BRAND.emerald, BRAND.sage].map((c) => (
+                <div key={c} className="h-10 rounded-xl border" style={{ backgroundColor: c, borderColor: "#e5e7eb" }} />
+              ))}
+            </div>
+          </div>
+        </div>
+      </Section>
+
+      {/* Contact */}
+      <Section id="contact" style={{ backgroundColor: BRAND.gray }}>
+        <div className="text-center mb-8">
+          <h2 className="text-3xl font-bold" style={{ color: BRAND.navy }}>Let’s Get Your Books Calm & Clear</h2>
+          <p className="text-gray-700">Send a note and I’ll reply within 1–2 business days.</p>
+        </div>
+        <div className="grid md:grid-cols-2 gap-8 items-stretch">
+          <div className="rounded-2xl border p-6 bg-white" style={{ borderColor: BRAND.gray }}>
+            <form onSubmit={(e) => { e.preventDefault(); alert("Thanks! I’ll be in touch soon."); }} className="space-y-4">
+              <div className="grid md:grid-cols-2 gap-4">
+                <input className="w-full rounded-md border px-3 py-2" placeholder="Your name" required />
+                <input className="w-full rounded-md border px-3 py-2" type="email" placeholder="Email" required />
+              </div>
+              <input className="w-full rounded-md border px-3 py-2" placeholder="Business name" />
+              <textarea className="w-full rounded-md border px-3 py-2" placeholder="Tell me what you need help with…" rows={5} />
+              <button type="submit" className="w-full rounded-lg px-4 py-2 text-white" style={{ backgroundColor: BRAND.emerald }}>
+                Request a Free Consult
+              </button>
+            </form>
+          </div>
+          <div className="flex flex-col justify-center p-6 rounded-2xl bg-white" style={{ border: `2px solid ${BRAND.sage}` }}>
+            <div className="text-gray-800">📧 hello@bookkeepingisessential.com</div>
+            <div className="mt-3 text-gray-800">📞 (555) 555-0123</div>
+            <p className="mt-4 text-gray-600 text-sm">Prefer a quick intro call? Send a time that works and I’ll confirm.</p>
+          </div>
+        </div>
+      </Section>
+
+      {/* Footer */}
+      <footer className="py-10" style={{ backgroundColor: BRAND.navy, color: "white" }}>
+        <div className="max-w-6xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-4">
+          <div className="flex items-center gap-3">
+            <Logo size={28} />
+            <span className="text-sm">© {new Date().getFullYear()} Bookkeeping is Essential</span>
+          </div>
+          <div className="text-sm opacity-90">Clarity in every transaction.</div>
+        </div>
+      </footer>
+    </div>
   );
 }
